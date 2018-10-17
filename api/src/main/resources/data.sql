@@ -1,0 +1,2 @@
+insert into usuario (id, usuario, senha, nome, email, idioma) values(1,'joao', '1234', 'Joao da Silva','joaodasilva@email.com', 'pt-br');
+insert into usuario (id, usuario, senha, nome, email, idioma) values(2,'maria', '1111', 'Maria dos Santos','mariasantos@email.com', 'pt-br');

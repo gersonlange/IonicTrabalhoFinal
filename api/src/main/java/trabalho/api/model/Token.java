@@ -1,23 +1,16 @@
 package trabalho.api.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class Token {
 
+	@Setter @Getter
 	private String token;
+
+	@Setter @Getter
+	private String nome;
+
+	@Setter @Getter
 	private long data;
-	
-	public void setToken(String token) {
-		this.token = token;
-	}
-	
-	public String getToken() {
-		return token;
-	}
-	
-	public void setData(long data) {
-		this.data = data;
-	}
-	
-	public long getData() {
-		return data;
-	}
 }

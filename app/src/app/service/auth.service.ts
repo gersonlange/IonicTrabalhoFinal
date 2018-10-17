@@ -6,6 +6,7 @@ const apiUrl = 'http://localhost:8080/';
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthService {
 
   constructor(public http: Http) { }
@@ -13,14 +14,14 @@ export class AuthService {
   postData(credentials, type) {
     return new Promise((resolve, reject) => {
       const headers = new Headers();
+      headers.append('Content-Type', 'application/json');
 
-      console.log(JSON.stringify(credentials));
-
-      this.http.post(apiUrl + type, JSON.stringify(credentials), {headers: headers})
+      this.http.post(apiUrl + type, 
+           JSON.stringify(credentials),
+           {headers: headers})
         .subscribe(res => {
           resolve(res.json());
         }, (err) => {
-          console.log(err);
           reject(err);
         });
     });
