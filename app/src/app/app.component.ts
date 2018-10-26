@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 
 import { Platform } from '@ionic/angular';
@@ -11,21 +12,20 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 export class AppComponent {
   public appPages = [
     {
-      title: 'Home',
-      url: '/home',
-      icon: 'home'
+      title: 'Novo Professor',
+      url: '/novo-professor'
     },
     {
-      title: 'List',
-      url: '/list',
-      icon: 'list'
+      title: 'Lista de Professores',
+      url: '/lista-professores'
     }
   ];
 
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private router: Router
   ) {
     this.initializeApp();
   }
@@ -35,5 +35,10 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
+  }
+
+  logout() {
+    localStorage.removeItem('usuario_token');
+    this.router.navigate(['']);
   }
 }

@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,8 @@ import trabalho.api.repo.UsuarioRepository;
 @RestController
 public class LoginController
 {
+	private static Logger logger = LoggerFactory.getLogger(LoginController.class);
+
 	private static HashMap<String, Long> tokens = new HashMap<>();
 	
 	@Autowired
@@ -34,6 +38,8 @@ public class LoginController
 	public ResponseEntity<?> auth(
 			@RequestBody Login login) throws JsonParseException, JsonMappingException, IOException
 	{
+		logger.debug(login.toString());
+		
 		Usuario usuario = usuarioRepository.findByUsuario(login.getUsername());
 
 		if ( usuario != null && usuario.getSenha().equals(login.getPassword()) )

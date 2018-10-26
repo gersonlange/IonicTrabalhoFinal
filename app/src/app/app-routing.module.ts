@@ -1,3 +1,4 @@
+import { AuthGuard } from './auth/auth.guard';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -8,16 +9,18 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'home',
-    loadChildren: './home/home.module#HomePageModule'
-  },
-  {
-    path: 'list',
-    loadChildren: './list/list.module#ListPageModule'
-  },
-  {
     path: 'login',
-    loadChildren: './login/login.module#LoginPageModule'
+    loadChildren: './pages/login/login.module#LoginPageModule'
+  },
+  {
+    path: 'novo-professor',
+    loadChildren: './pages/novo-professor/novo-professor.module#NovoProfessorPageModule',
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'lista-professores',
+    loadChildren: './pages/lista-professores/lista-professores.module#ListaProfessoresPageModule',
+    canActivate: [AuthGuard]
   }
 ];
 
