@@ -19,7 +19,9 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import trabalho.api.entity.Usuario;
+import trabalho.api.model.Esqueceu;
 import trabalho.api.model.Login;
+import trabalho.api.model.Retorno;
 import trabalho.api.model.Token;
 import trabalho.api.repo.UsuarioRepository;
 
@@ -32,7 +34,7 @@ public class LoginController
 	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
-	
+
 	@PostMapping(value = "/auth")
 	@CrossOrigin(origins = {"http://localhost:8100", "http://localhost:8080"})	
 	public ResponseEntity<?> auth(
@@ -55,5 +57,28 @@ public class LoginController
 		}
 
 		return new ResponseEntity<String>(HttpStatus.UNAUTHORIZED);
+	}
+
+	@PostMapping(value = "/auth/esqueceu")
+	@CrossOrigin(origins = {"http://localhost:8100", "http://localhost:8080"})	
+	public ResponseEntity<Retorno> esqueceu(
+			@RequestBody Esqueceu esqueceu)
+	{
+		logger.debug(esqueceu.toString());
+		
+		Usuario usuario = usuarioRepository.findByEmail(esqueceu.getEmail());
+
+		
+		Retorno retorno = new Retorno();
+
+		if ( usuario == null ) {
+			retorno.setResposta("erro");
+			
+			return new ResponseEntity<Retorno>(retorno, HttpStatus.FORBIDDEN);
+		}
+		
+		retorno.setResposta("enviou");
+
+		return new ResponseEntity<Retorno>(retorno, HttpStatus.OK);
 	}
 }

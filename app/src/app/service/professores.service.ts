@@ -1,23 +1,24 @@
-import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
+import { Injectable } from '@angular/core';
 
 const apiUrl = 'http://localhost:8080/';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class ProfessoresService {
+
+  listaProfessores: any;
 
   constructor(public http: Http) { }
 
-  postData(credentials, type) {
+  getData(type) {
 
     return new Promise((resolve, reject) => {
       const headers = new Headers();
       headers.append('Content-Type', 'application/json');
 
-      this.http.post(apiUrl + type,
-           JSON.stringify(credentials),
+      this.http.get(apiUrl + type,
            {headers: headers})
         .subscribe(res => {
           resolve(res.json());
@@ -26,4 +27,5 @@ export class AuthService {
         });
     });
   }
+
 }

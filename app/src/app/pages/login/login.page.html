@@ -9,22 +9,26 @@
           <form (ngSubmit)="doLogin()">
             <div padding>
               <ion-item>
-                <ion-input type="text" placeholder="Usuário" [(ngModel)]="userData.username"></ion-input>
+                <ion-input type="text" name = "username" placeholder="Usuário" [(ngModel)]="username"></ion-input>
               </ion-item>
       
               <ion-item>
-                <ion-input type="password" placeholder="Senha" [(ngModel)]="userData.password"></ion-input>
+                <ion-input type="password" name = "password" placeholder="Senha" [(ngModel)]="password"></ion-input>
               </ion-item>
             </div>
       
             <div padding>
-              <ion-button size="large" expand="block">Entrar</ion-button>
+              <ion-button size="large" expand="block" type="submit">Entrar</ion-button>
             </div>
           </form>
 
+          <div>
+            <ion-label type="submit" text-center="" (click)="esqueceuSenha()">Esqueceu a senha?</ion-label>
+          </div>
+
           <div >
-              <ion-item  >
-                <ion-label text-wrap color=red color="danger" >{{msgErro}}</ion-label>
+              <ion-item>
+                <ion-label text-wrap color=red color="danger">{{msgErro}}</ion-label>
               </ion-item>
           </div>
         </ion-col>

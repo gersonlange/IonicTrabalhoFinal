@@ -1,3 +1,4 @@
+import { ProfessoresService } from './../../service/professores.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +8,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListaProfessoresPage implements OnInit {
 
-  constructor() { }
+  data: {};
+
+  constructor(private professoresService: ProfessoresService) {}
 
   ngOnInit() {
+    this.dados();
   }
 
+  doRefresh(event) {
+    console.log('Begin async operation');
+
+    this.dados();
+
+    event.target.complete();
+  }
+
+  dados() {
+      this.professoresService.getData('professores')
+        .then(data => {
+          this.data = data;
+        });
+  }
 }
