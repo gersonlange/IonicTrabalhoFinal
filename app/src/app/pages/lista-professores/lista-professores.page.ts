@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { ProfessoresService } from './../../service/professores.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -10,7 +11,10 @@ export class ListaProfessoresPage implements OnInit {
 
   data: {};
 
-  constructor(private professoresService: ProfessoresService) {}
+  constructor(
+    private professoresService: ProfessoresService,
+    private router: Router
+    ) {}
 
   ngOnInit() {
     this.dados();
@@ -29,5 +33,17 @@ export class ListaProfessoresPage implements OnInit {
         .then(data => {
           this.data = data;
         });
+  }
+
+  seleciona(dados) {
+    console.log('selecionado ' + dados);
+
+    this.professoresService.dadosProfessor = dados;
+
+    this.router.navigate(['detalhes-professor']);
+  }
+
+  novoProfessor() {
+    this.router.navigate(['novo-professor']);
   }
 }

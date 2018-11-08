@@ -1,9 +1,47 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>novo-professor</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      {{titulo}}
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
+  <ion-card>
+    <img src="{{image}}" (click)="escolheFoto()"/>
+    <ion-card-content>
 
+      <ion-item>
+        <ion-label fixed>Nome</ion-label>
+        <ion-input type="text" [(ngModel)]="nome"></ion-input>
+      </ion-item>
+      <ion-label text-wrap color=red color="danger">{{msgNome}}</ion-label>
+
+      <ion-item>
+        <ion-label>Ativo</ion-label>
+        <ion-toggle [(ngModel)]="ativo"></ion-toggle>
+      </ion-item>
+
+      <ion-item>
+        <ion-label fixed>Data de nascimento</ion-label>
+        <ion-input type="date" [(ngModel)]="dataNascimento"></ion-input>
+      </ion-item>
+      <ion-label text-wrap color=red color="danger">{{msgDtNasc}}</ion-label>
+
+      <ion-item>
+        <ion-label fixed>Curriculo</ion-label>
+        <ion-textarea type="date" [(ngModel)]="curriculo" autoresize="100"></ion-textarea>
+      </ion-item>
+      <ion-label text-wrap color=red color="danger">{{msgCurriculo}}</ion-label>
+
+    </ion-card-content>
+  </ion-card>
 </ion-content>
+
+<ion-footer>
+  <ion-button size="large" expand="block" type="submit" color="secondary"
+    (click)="cadastrar()">{{nomeBotao}}</ion-button>
+</ion-footer>

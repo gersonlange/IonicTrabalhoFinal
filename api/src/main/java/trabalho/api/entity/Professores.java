@@ -17,17 +17,18 @@ public class Professores {
 
 	@Id
 	@GeneratedValue
+	@Setter @Getter
 	private Long id;
 
 	@Setter @Getter
 	private String nome;
 
 	@Setter @Getter
-	private Date dataNascimento;
+	private String dataNascimento;
 	
 	@Setter @Getter
 	@Lob
-	private Byte[] foto;
+	private String foto;
 
 	@Setter @Getter
 	private String curriculo;

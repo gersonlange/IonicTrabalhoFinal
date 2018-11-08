@@ -1,7 +1,7 @@
 insert into usuario (id, usuario, senha, nome, email, idioma) values(1,'joao', '1234', 'Joao da Silva','joaodasilva@email.com', 'pt-br');
 insert into usuario (id, usuario, senha, nome, email, idioma) values(2,'maria', '1111', 'Maria dos Santos','mariasantos@email.com', 'pt-br');
 
-insert into professores (nome, data_nascimento, foto, curriculo, status) values ('Elsie Brett'       , '1990-01-01', null, '', true); 
+insert into professores (nome, data_nascimento, foto, curriculo, status) values ('Elsie Brett'       , '1990-01-01', null, 'Curriculum'||CHAR(10)||'Linha01'||CHAR(10)||'linha02'||CHAR(10)||'linha03', true); 
 insert into professores (nome, data_nascimento, foto, curriculo, status) values ('Phoenix Squires'   , '1991-01-02', null, '', true);
 insert into professores (nome, data_nascimento, foto, curriculo, status) values ('Bluebell Bateman'  , '1992-01-03', null, '', true);
 insert into professores (nome, data_nascimento, foto, curriculo, status) values ('Dione Briggs'      , '1993-01-04', null, '', true);

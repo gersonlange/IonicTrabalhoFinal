@@ -21,6 +21,10 @@ const routes: Routes = [
     path: 'lista-professores',
     loadChildren: './pages/lista-professores/lista-professores.module#ListaProfessoresPageModule',
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'detalhes-professor',
+    loadChildren: './pages/detalhes-professor/detalhes-professor.module#DetalhesProfessorPageModule'
   }
 ];
 

@@ -10,6 +10,8 @@ export class ProfessoresService {
 
   listaProfessores: any;
 
+  dadosProfessor: any;
+
   constructor(public http: Http) { }
 
   getData(type) {

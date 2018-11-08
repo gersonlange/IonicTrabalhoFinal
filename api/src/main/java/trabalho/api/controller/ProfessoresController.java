@@ -34,6 +34,8 @@ public class ProfessoresController
 	public ResponseEntity<List<Professores>> lista()
 	{
 		List<Professores> lista = professoresRepository.findAll();
+		
+		logger.debug(lista.toString());
 
 		return new ResponseEntity<List<Professores>>(lista, HttpStatus.OK);
 

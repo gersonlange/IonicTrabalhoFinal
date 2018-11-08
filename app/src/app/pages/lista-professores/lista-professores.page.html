@@ -6,6 +6,9 @@
     <ion-title>
       Lista de Professores
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="novoProfessor()"><ion-icon name="person-add"></ion-icon></ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -20,10 +23,8 @@
   </ion-refresher>
 
   <ion-list>
-    <ion-item *ngFor="let professor of data">
-      <ion-label>
-        <h2>{{professor.nome}}</h2>
-      </ion-label>
+    <ion-item *ngFor="let professor of data" (click)="seleciona(professor)">
+      <h3>{{professor.nome}}</h3>
     </ion-item>
   </ion-list>
 

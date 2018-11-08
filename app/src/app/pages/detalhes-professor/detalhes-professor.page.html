@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Detalhes do professor
+    </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="editaProfessor()"><ion-icon name="create"></ion-icon></ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+  
+<ion-content>
+    <ion-card>
+      <img src="{{imagem}}" (click)="escolherFoto()"/>
+      <ion-card-content>
+        <ion-card-title>
+            {{data.nome}}
+        </ion-card-title>
+        <p>Data de nascimento: {{data.dataNascimento | date: 'dd/MM/yyyy'}}</p>
+        <p>{{data.curriculo}}</p>
+      </ion-card-content>
+    </ion-card>
+</ion-content>
+
+<ion-footer>
+    <ion-button size="large" expand="block" type="submit" color="danger"
+      (click)="excluir()">Excluir</ion-button>
+</ion-footer>
