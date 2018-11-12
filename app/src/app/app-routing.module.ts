@@ -24,7 +24,8 @@ const routes: Routes = [
   },
   {
     path: 'detalhes-professor',
-    loadChildren: './pages/detalhes-professor/detalhes-professor.module#DetalhesProfessorPageModule'
+    loadChildren: './pages/detalhes-professor/detalhes-professor.module#DetalhesProfessorPageModule',
+    canActivate: [AuthGuard]
   }
 ];
 

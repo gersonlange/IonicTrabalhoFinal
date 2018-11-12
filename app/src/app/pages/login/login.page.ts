@@ -1,3 +1,4 @@
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { AuthService } from './../../service/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
