@@ -1,7 +1,6 @@
+import { AuthService } from './auth.service';
 import { Http, Headers } from '@angular/http';
 import { Injectable } from '@angular/core';
-
-const apiUrl = 'http://localhost:8080/';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +11,8 @@ export class ProfessoresService {
 
   dadosProfessor: any;
 
-  constructor(public http: Http) { }
+  constructor(public http: Http,
+    private authService: AuthService) { }
 
   getData(type) {
 
@@ -20,7 +20,7 @@ export class ProfessoresService {
       const headers = new Headers();
       headers.append('Content-Type', 'application/json');
 
-      this.http.get(apiUrl + type,
+      this.http.get(this.authService.getUrl() + type,
            {headers: headers})
         .subscribe(res => {
           resolve(res.json());

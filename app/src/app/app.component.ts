@@ -14,11 +14,13 @@ export class AppComponent {
   public appPages = [
     {
       title: 'Novo Professor',
-      url: '/novo-professor'
+      url: '/novo-professor',
+      icon: 'person-add'
     },
     {
       title: 'Lista de Professores',
-      url: '/lista-professores'
+      url: '/lista-professores',
+      icon: 'grid'
     }
   ];
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 
-const apiUrl = 'http://localhost:8080/';
+const apiUrl = 'http://192.168.100.51:8080/';
 
 @Injectable({
   providedIn: 'root'
@@ -25,5 +25,9 @@ export class AuthService {
           reject(err);
         });
     });
+  }
+
+  getUrl() {
+    return apiUrl;
   }
 }

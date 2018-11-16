@@ -44,6 +44,8 @@ export class ListaProfessoresPage implements OnInit {
   }
 
   novoProfessor() {
+    this.professoresService.dadosProfessor = null;
+
     this.router.navigate(['novo-professor']);
   }
 }

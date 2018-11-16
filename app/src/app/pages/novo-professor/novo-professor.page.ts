@@ -1,6 +1,8 @@
 import { ProfessoresService } from './../../service/professores.service';
 import { NavController } from '@ionic/angular';
+import { ActionSheetController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 @Component({
   selector: 'app-novo-professor',
@@ -10,6 +12,7 @@ import { Component, OnInit } from '@angular/core';
 export class NovoProfessorPage implements OnInit {
 
   image: any;
+  fotoPadrao: any;
 
   titulo: string;
   nomeBotao: string;
@@ -25,11 +28,15 @@ export class NovoProfessorPage implements OnInit {
   msgCurriculo: any;
 
   constructor(private navCtrl: NavController,
-      private professorService: ProfessoresService) { }
+      private professorService: ProfessoresService,
+      public actionSheetCtrl: ActionSheetController,
+      private camera: Camera) { }
 
   ngOnInit() {
+    this.fotoPadrao = '/assets/img/smile.png';
+
     this.titulo = 'Novo professor';
-    this.image = '/assets/img/smile.png';
+    this.image = this.fotoPadrao;
     this.nomeBotao = 'Criar novo professor';
 
     const dados = this.professorService.dadosProfessor;
@@ -77,6 +84,81 @@ export class NovoProfessorPage implements OnInit {
     if ( b ) {
       this.navCtrl.navigateForward('/lista-professores');
     }
+  }
+
+  escolheFoto() {
+    this.menu();
+  }
+
+  async menu() {
+
+    const actionSheet = await this.actionSheetCtrl.create({
+      header: 'Escolha sua opção',
+      buttons: [
+        {
+          text: 'Carregar foto da galeria',
+          role: 'galeria',
+          handler: () => {
+            this.buscarFotoGaleria();
+          }
+        },
+        {
+          text: 'Tirar foto usando a câmera',
+          handler: () => {
+            this.tirarFoto();
+          }
+        },
+        {
+          text: 'Colocar avatar padrão',
+          role: 'padrao',
+          handler: () => {
+            this.image = this.fotoPadrao;
+          }
+        }
+      ]
+    });
+
+    await actionSheet.present();
+  }
+
+  buscarFotoGaleria() {
+    const options: CameraOptions = {
+        quality: 100,
+        destinationType: this.camera.DestinationType.DATA_URL,
+        sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+        encodingType: this.camera.EncodingType.JPEG,
+        mediaType: this.camera.MediaType.PICTURE
+    }
+    this
+        .camera
+        .getPicture(options)
+        .then((imageData) => {
+            this.image = 'data:image/jpeg;base64,' + imageData;
+            this.salvaFoto();
+        }, (err) => {
+            console.log(err);
+        });
+}
+  tirarFoto() {
+    const options: CameraOptions = {
+        quality: 50,
+        destinationType: this.camera.DestinationType.DATA_URL,
+        encodingType: this.camera.EncodingType.JPEG,
+        mediaType: this.camera.MediaType.PICTURE
+    }
+    this
+        .camera
+        .getPicture(options)
+        .then((imageData) => {
+            this.image = 'data:image/jpeg;base64,' + imageData;
+            this.salvaFoto();
+        }, (err) => {
+           console.log(err);
+        });
+  }
+
+  salvaFoto() {
+
   }
 
 }

@@ -20,7 +20,13 @@ export class LoginPage implements OnInit {
     private router: Router,
     public alertCtrl: AlertController,
     private navCtrl: NavController
-  ) { }
+  ) {
+
+    if ( localStorage.getItem('usuario_token') != null ) {
+      this.navCtrl.navigateForward('/lista-professores');
+    }
+
+  }
 
   ngOnInit() {
   }
