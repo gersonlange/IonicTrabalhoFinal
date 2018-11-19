@@ -45,9 +45,10 @@ export class SqliteService {
   }
 
   public drop() {
-    this.db.executeSql(
-      'drop table professores'
-    )
+    this.sqlite.deleteDatabase({
+        name: 'trabalho.db',
+        location: 'default'
+      })
     .then(() => console.log('drop Tabelas'))
     .catch(e => console.error('Erro ao excluir as tabelas', e));
   }

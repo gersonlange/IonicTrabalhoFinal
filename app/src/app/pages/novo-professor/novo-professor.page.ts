@@ -1,5 +1,5 @@
 import { ProfessoresService } from './../../service/professores.service';
-import { NavController } from '@ionic/angular';
+import { NavController, AlertController } from '@ionic/angular';
 import { ActionSheetController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
@@ -32,7 +32,8 @@ export class NovoProfessorPage implements OnInit {
       private professorService: ProfessoresService,
       public actionSheetCtrl: ActionSheetController,
       private camera: Camera,
-      private toastController: ToastController) { }
+      private toastController: ToastController,
+      private alertCtrl: AlertController) { }
 
   ngOnInit() {
     this.fotoPadrao = '/assets/img/smile.png';
@@ -60,12 +61,6 @@ export class NovoProfessorPage implements OnInit {
   }
 
   cadastrar() {
-    console.log('cadastrar');
-    console.log(this.nome);
-    console.log(this.ativo);
-    console.log(this.data_nascimento);
-    console.log(this.curriculo);
-
     let b = true;
 
     if ( ! this.nome || this.nome === '' ) {
@@ -84,6 +79,8 @@ export class NovoProfessorPage implements OnInit {
     }
 
     if ( b ) {
+      this.salvar();
+
       this.navCtrl.navigateForward('/lista-professores');
     }
   }
@@ -114,14 +111,42 @@ export class NovoProfessorPage implements OnInit {
           text: 'Colocar avatar padrão',
           role: 'padrao',
           handler: () => {
-            this.image = this.fotoPadrao;
-            this.toast();
+
+            this.confirmaPadrao();
+
           }
         }
       ]
     });
 
     await actionSheet.present();
+  }
+
+  async confirmaPadrao() {
+
+    const prompt = await this.alertCtrl.create({
+      header: 'Confirma excluir foto?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'OK',
+          handler: data => {
+            console.log('OK clicked');
+
+            this.image = this.fotoPadrao;
+            this.toast();
+
+            this.toast();
+          }
+        }
+      ]
+    });
+    await prompt.present();
   }
 
   buscarFotoGaleria() {
@@ -163,6 +188,11 @@ export class NovoProfessorPage implements OnInit {
   }
 
   public salvar() {
+
+    if ( this.image === this.fotoPadrao ) {
+      this.image = null;
+    }
+
     this.professorService.alteraProfessor(
           this.id,
           this.nome,

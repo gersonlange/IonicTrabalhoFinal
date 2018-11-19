@@ -34,7 +34,7 @@ export class ProfessoresService {
     });
   }
 
-  alteraProfessor(id, nome, data_nascimento, curriculum, status, imagem) {
+  alteraProfessor(id, nome, data_nascimento, curriculo, status, foto) {
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -44,13 +44,16 @@ export class ProfessoresService {
           id: id,
           nome: nome,
           data_nascimento: data_nascimento,
-          curriculum: curriculum,
+          curriculo: curriculo,
           status: status,
-          imagem: imagem
+          foto: foto
         },
         {headers: headers})
       .subscribe(res => {
         console.log(res);
+
+        this.update(id, nome, data_nascimento, foto, curriculo, status);
+
       }, (err) => {
         console.log(err);
       });
@@ -58,7 +61,7 @@ export class ProfessoresService {
 
   excluiProfessor(id) {
 
-    this.http.delete(this.authService.getUrl() + 'professor?id=' + id, {})
+    this.http.delete(this.authService.getUrl() + 'professor/' + id, {})
       .subscribe(res => {
         console.log(res);
 
@@ -86,7 +89,7 @@ export class ProfessoresService {
           const p = data.rows.item(0);
 
           const professor = { id: p.id, nome: p.nome, data_nascimento: p.data_nascimento,
-            foto: p.foto, curriculum: p.curriculum, status: p.status};
+            foto: p.foto, curriculo: p.curriculo, status: p.status};
 
           return professor;
         } else {
@@ -109,7 +112,7 @@ export class ProfessoresService {
             const p = data.rows.item(i);
 
             professores.push({ id: p.id, nome: p.nome, data_nascimento: p.data_nascimento,
-                foto: p.foto, curriculum: p.curriculum, status: p.status});
+                foto: p.foto, curriculo: p.curriculo, status: p.status});
           }
 
           return professores;

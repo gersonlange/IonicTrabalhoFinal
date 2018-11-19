@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import trabalho.api.entity.Professores;
+import trabalho.api.model.Professor;
 import trabalho.api.repo.ProfessoresRepository;
 
 /**
@@ -39,8 +40,6 @@ public class ProfessoresController
 	{
 		List<Professores> lista = professoresRepository.findAll();
 		
-		logger.debug(lista.toString());
-
 		return new ResponseEntity<List<Professores>>(lista, HttpStatus.OK);
 
 	}
@@ -48,9 +47,21 @@ public class ProfessoresController
 	@PostMapping(value = "/professor")
 	@CrossOrigin(origins = {"http://localhost:8100", "http://localhost:8080"})	
 	public ResponseEntity<?> salvar(
-			@RequestBody String dados)
+			@RequestBody Professor dados)
 	{
-		logger.debug(dados);
+		logger.info("dados: " + dados);
+
+		Professores d = new Professores();
+
+		if ( dados.getId() > 0 )
+			d.setId(dados.getId());
+
+		d.setNome(dados.getNome());
+		d.setDataNascimento(dados.getData_nascimento());
+		d.setCurriculo(dados.getCurriculo());
+		d.setStatus(dados.getStatus());
+		d.setFoto(dados.getFoto());
+		professoresRepository.save(d);
 
 		return new ResponseEntity<String>(HttpStatus.OK);
 
@@ -59,9 +70,11 @@ public class ProfessoresController
 	@DeleteMapping(value = "/professor/{id}")
 	@CrossOrigin(origins = {"http://localhost:8100", "http://localhost:8080"})	
 	public ResponseEntity<?> deletar(
-			@PathVariable("id") int id)
+			@PathVariable("id") long id)
 	{
-		logger.debug("id: " + id);
+		logger.info("id: " + id);
+
+		professoresRepository.delete(id);
 
 		return new ResponseEntity<String>(HttpStatus.OK);
 

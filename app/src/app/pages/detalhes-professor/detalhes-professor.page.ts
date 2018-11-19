@@ -1,4 +1,4 @@
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
@@ -22,7 +22,8 @@ export class DetalhesProfessorPage implements OnInit {
     private router: Router,
     public actionSheetCtrl: ActionSheetController,
     private camera: Camera,
-    private toastController: ToastController) { }
+    private toastController: ToastController,
+    private alertCtrl: AlertController) { }
 
   ngOnInit() {
     this.data = this.professorService.dadosProfessor;
@@ -31,7 +32,7 @@ export class DetalhesProfessorPage implements OnInit {
     if ( this.data.foto == null ) {
       this.imagem = this.fotoPadrao;
     } else {
-      this.imagem = 'data:image/jpeg;base64,' + this.data.foto;
+      this.imagem = this.data.foto;
     }
 
     if ( this.data.status ) {
@@ -50,13 +51,20 @@ export class DetalhesProfessorPage implements OnInit {
   }
 
   public salvar() {
+
+    let imagem = this.imagem;
+
+    if ( this.imagem === this.fotoPadrao ) {
+      imagem = null;
+    }
+
     this.professorService.alteraProfessor(
           this.data.id,
           this.data.nome,
           this.data.data_nascimento,
           this.data.curriculo,
           this.data.status,
-          this.imagem);
+          imagem);
   }
 
   excluir () {
@@ -91,9 +99,9 @@ export class DetalhesProfessorPage implements OnInit {
           text: 'Colocar avatar padrão',
           role: 'padrao',
           handler: () => {
-            this.imagem = this.fotoPadrao;
-            this.salvar();
-            this.toast();
+
+            this.confirmaPadrao();
+
           }
         }
       ]
@@ -101,6 +109,35 @@ export class DetalhesProfessorPage implements OnInit {
 
     await actionSheet.present();
   }
+
+
+  async confirmaPadrao() {
+
+    const prompt = await this.alertCtrl.create({
+      header: 'Confirma excluir foto?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'OK',
+          handler: data => {
+            console.log('OK clicked');
+
+            this.imagem = this.fotoPadrao;
+            this.salvar();
+
+            this.toast();
+          }
+        }
+      ]
+    });
+    await prompt.present();
+  }
+
 
   buscarFotoGaleria() {
     const options: CameraOptions = {
