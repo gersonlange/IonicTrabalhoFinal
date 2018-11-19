@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { ProfessoresService } from '../../service/professores.service';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-detalhes-professor',
@@ -13,13 +14,15 @@ export class DetalhesProfessorPage implements OnInit {
 
   data: any;
   imagem: any;
+  icone: any;
   fotoPadrao: any;
 
   constructor(
     private professorService: ProfessoresService,
     private router: Router,
     public actionSheetCtrl: ActionSheetController,
-    private camera: Camera) { }
+    private camera: Camera,
+    private toastController: ToastController) { }
 
   ngOnInit() {
     this.data = this.professorService.dadosProfessor;
@@ -30,14 +33,36 @@ export class DetalhesProfessorPage implements OnInit {
     } else {
       this.imagem = 'data:image/jpeg;base64,' + this.data.foto;
     }
+
+    if ( this.data.status ) {
+      this.icone = 'checkmark-circle-outline';
+    } else {
+      this.icone = 'close-circle';
+    }
   }
 
   escolherFoto() {
     this.menu();
   }
 
+  cadastrar() {
+    this.salvar();
+  }
+
+  public salvar() {
+    this.professorService.alteraProfessor(
+          this.data.id,
+          this.data.nome,
+          this.data.data_nascimento,
+          this.data.curriculo,
+          this.data.status,
+          this.imagem);
+  }
+
   excluir () {
     console.log(this.data.id);
+
+    this.professorService.excluiProfessor(this.data.id);
   }
 
   editaProfessor() {
@@ -67,6 +92,8 @@ export class DetalhesProfessorPage implements OnInit {
           role: 'padrao',
           handler: () => {
             this.imagem = this.fotoPadrao;
+            this.salvar();
+            this.toast();
           }
         }
       ]
@@ -88,7 +115,8 @@ export class DetalhesProfessorPage implements OnInit {
         .getPicture(options)
         .then((imageData) => {
             this.imagem = 'data:image/jpeg;base64,' + imageData;
-            this.salvaFoto();
+            this.salvar();
+            this.toast();
         }, (err) => {
             console.log(err);
         });
@@ -105,25 +133,19 @@ export class DetalhesProfessorPage implements OnInit {
         .getPicture(options)
         .then((imageData) => {
             this.imagem = 'data:image/jpeg;base64,' + imageData;
-            this.salvaFoto();
+            this.salvar();
+            this.toast();
         }, (err) => {
            console.log(err);
         });
   }
 
-  public salvaFoto() {
-//    this.professorService.alteraProfessor(
-//          this.professor._id,
-//          this.professor.name,
-//          this.professor.birthDate = new Date().toISOString(),
-//          this.professor.curriculum,
-//          this.professor.status,
-//          this.imagem)
-//        .pipe(first())
-//        .subscribe(
-//            result => this.router.navigate(['/lista-professores']),
-//            err => this.error = 'Erro ao alterar o professor'
-//        );
+  async toast() {
+    const toast = await this.toastController.create({
+      message: 'Foto alterada',
+      duration: 2000
+    });
+    toast.present();
   }
 
 }

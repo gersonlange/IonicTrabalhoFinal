@@ -17,6 +17,7 @@
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content
       pullingIcon="arrow-dropdown"
+      pullingText="Pull to refresh"
       refreshingSpinner="circles"
       refreshingText="Atualizando...">
     </ion-refresher-content>
@@ -27,5 +28,12 @@
       <h3>{{professor.nome}}</h3>
     </ion-item>
   </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Buscando novos dados...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
 </ion-content>

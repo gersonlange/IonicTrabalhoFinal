@@ -3,6 +3,7 @@ import { NavController } from '@ionic/angular';
 import { ActionSheetController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-novo-professor',
@@ -20,7 +21,7 @@ export class NovoProfessorPage implements OnInit {
   id: any;
   nome: string;
   ativo: boolean;
-  dataNascimento: any;
+  data_nascimento: any;
   curriculo: string;
 
   msgNome: any;
@@ -30,7 +31,8 @@ export class NovoProfessorPage implements OnInit {
   constructor(private navCtrl: NavController,
       private professorService: ProfessoresService,
       public actionSheetCtrl: ActionSheetController,
-      private camera: Camera) { }
+      private camera: Camera,
+      private toastController: ToastController) { }
 
   ngOnInit() {
     this.fotoPadrao = '/assets/img/smile.png';
@@ -48,7 +50,7 @@ export class NovoProfessorPage implements OnInit {
 
       this.nome = dados.nome;
       this.ativo = dados.ativo;
-      this.dataNascimento = dados.dataNascimento;
+      this.data_nascimento = dados.data_nascimento;
       this.curriculo = dados.curriculo;
 
       if ( dados.imagem ) {
@@ -61,7 +63,7 @@ export class NovoProfessorPage implements OnInit {
     console.log('cadastrar');
     console.log(this.nome);
     console.log(this.ativo);
-    console.log(this.dataNascimento);
+    console.log(this.data_nascimento);
     console.log(this.curriculo);
 
     let b = true;
@@ -71,7 +73,7 @@ export class NovoProfessorPage implements OnInit {
       b = false;
     }
 
-    if ( ! this.dataNascimento ) {
+    if ( ! this.data_nascimento ) {
       this.msgDtNasc = 'Data de nascimento incorreta';
       b = false;
     }
@@ -113,6 +115,7 @@ export class NovoProfessorPage implements OnInit {
           role: 'padrao',
           handler: () => {
             this.image = this.fotoPadrao;
+            this.toast();
           }
         }
       ]
@@ -127,14 +130,14 @@ export class NovoProfessorPage implements OnInit {
         destinationType: this.camera.DestinationType.DATA_URL,
         sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
         encodingType: this.camera.EncodingType.JPEG,
-        mediaType: this.camera.MediaType.PICTURE
-    }
-    this
-        .camera
+        mediaType: this.camera.MediaType.PICTURE };
+
+   this.camera
         .getPicture(options)
         .then((imageData) => {
             this.image = 'data:image/jpeg;base64,' + imageData;
-            this.salvaFoto();
+            this.salvar();
+            this.toast();
         }, (err) => {
             console.log(err);
         });
@@ -145,20 +148,36 @@ export class NovoProfessorPage implements OnInit {
         destinationType: this.camera.DestinationType.DATA_URL,
         encodingType: this.camera.EncodingType.JPEG,
         mediaType: this.camera.MediaType.PICTURE
-    }
+    };
+
     this
         .camera
         .getPicture(options)
         .then((imageData) => {
             this.image = 'data:image/jpeg;base64,' + imageData;
-            this.salvaFoto();
+            this.salvar();
+            this.toast();
         }, (err) => {
            console.log(err);
         });
   }
 
-  salvaFoto() {
+  public salvar() {
+    this.professorService.alteraProfessor(
+          this.id,
+          this.nome,
+          this.data_nascimento,
+          this.curriculo,
+          true,
+          this.image);
+  }
 
+  async toast() {
+    const toast = await this.toastController.create({
+      message: 'Foto alterada',
+      duration: 2000
+    });
+    toast.present();
   }
 
 }

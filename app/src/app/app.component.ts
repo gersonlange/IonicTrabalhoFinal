@@ -1,3 +1,4 @@
+import { SqliteService } from './service/sqlite.service';
 import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 
@@ -28,7 +29,8 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private router: Router
+    private router: Router,
+    private sqlite: SqliteService
   ) {
     this.initializeApp();
   }
@@ -38,6 +40,9 @@ export class AppComponent {
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
+
+      this.sqlite.createDatabase();
+
       this.splashScreen.hide();
 
       timer(3000).subscribe(() => this.showSplash = false);
@@ -46,6 +51,8 @@ export class AppComponent {
 
   logout() {
     localStorage.removeItem('usuario_token');
+    this.sqlite.drop();
+
     this.router.navigate(['']);
   }
 }

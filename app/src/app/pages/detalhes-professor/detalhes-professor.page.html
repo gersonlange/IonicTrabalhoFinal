@@ -20,8 +20,9 @@
       <ion-card-content>
         <ion-card-title>
             {{data.nome}}
+            <ion-icon name="{{icone}}"></ion-icon>
         </ion-card-title>
-        <p>Data de nascimento: {{data.dataNascimento | date: 'dd/MM/yyyy'}}</p>
+        <p>Data de nascimento: {{data.data_nascimento | date: 'dd/MM/yyyy'}}</p>
         <p>{{data.curriculo}}</p>
       </ion-card-content>
     </ion-card>

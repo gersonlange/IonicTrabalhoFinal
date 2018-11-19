@@ -9,30 +9,93 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListaProfessoresPage implements OnInit {
 
-  data: {};
+  private inicio: number;
+
+  data: any[];
 
   constructor(
     private professoresService: ProfessoresService,
-    private router: Router
+    private router: Router,
+    private professor: ProfessoresService
     ) {}
 
   ngOnInit() {
-    this.dados();
+
+    this.inicio = 0;
+
+    this.buscaBanco();
+
+  }
+
+  buscaBanco() {
+
+    this.professor.getProfessores(0)
+      .then(data => {
+
+        if ( data && data.length > 0 ) {
+          this.data = data;
+
+          this.inicio = this.inicio + data.length;
+        } else {
+          this.buscaServidor();
+        }
+      });
+
+  }
+
+  buscaServidor() {
+
+    this.professor.getServidor('professores')
+      .then(d => {
+
+        const count = Object.keys(d).length;
+
+        for ( let i = 0 ; i < count ; i++) {
+          this.professor.getProfessor(d[i].id)
+            .then(ret => {
+              if ( ret != null ) {
+                this.professor.update(d[i].id, d[i].nome, d[i].dataNascimento, d[i].foto, d[i].curriculo, d[i].status);
+              } else {
+                this.professor.insert(d[i].id, d[i].nome, d[i].dataNascimento, d[i].foto, d[i].curriculo, d[i].status);
+              }
+          });
+        }
+
+        console.log('inicio');
+
+        this.inicio = 0;
+
+        this.buscaBanco();
+    });
   }
 
   doRefresh(event) {
     console.log('Begin async operation');
-
-    this.dados();
+    this.buscaServidor();
 
     event.target.complete();
   }
 
-  dados() {
-      this.professoresService.getData('professores')
-        .then(data => {
-          this.data = data;
-        });
+  doInfinite(event) {
+
+    console.log('infinite');
+
+    this.professor.getProfessores(this.inicio)
+      .then(d => {
+
+        if ( d ) {
+          const count = d.length;
+
+          for (let i = 0; i < count; i++) {
+            this.data.push( d[i] );
+          }
+
+          this.inicio = this.inicio + d.length;
+          console.log(this.inicio);
+        }
+      });
+
+    event.target.complete();
   }
 
   seleciona(dados) {

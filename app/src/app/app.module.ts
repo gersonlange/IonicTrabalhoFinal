@@ -1,3 +1,4 @@
+import { SQLite } from '@ionic-native/sqlite/ngx';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
@@ -24,6 +25,7 @@ import {Camera} from '@ionic-native/camera/ngx';
     StatusBar,
     SplashScreen,
     Camera,
+    SQLite,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
